@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GerenciadorSenha
+namespace GerenciadorSenha.Modelos
 {
     public class Chave
     {

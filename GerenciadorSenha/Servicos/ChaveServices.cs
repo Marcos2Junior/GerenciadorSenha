@@ -1,10 +1,11 @@
-﻿using System;
+﻿using GerenciadorSenha.Modelos;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GerenciadorSenha
+namespace GerenciadorSenha.Servicos
 {
     public class ChaveServices
     {
@@ -35,13 +36,17 @@ namespace GerenciadorSenha
 
             Chaves = new List<Chave>();
 
-            using StreamReader sr = new StreamReader(Caminho + "Senhas");
-            string line = string.Empty;
-            while((line = await sr.ReadLineAsync()) != null)
+            if (File.Exists(Caminho + "Senhas"))
             {
-                string[] items = line.Split(":-");
+                using StreamReader sr = new StreamReader(Caminho + "Senhas");
 
-                Chaves.Add(new Chave(int.Parse(items[0]), items[1], items[2], items[3], DateTime.Parse(items[4]), null));  
+                string line = string.Empty;
+                while ((line = await sr.ReadLineAsync()) != null)
+                {
+                    string[] items = line.Split(":-");
+
+                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], items[2], items[3], DateTime.Parse(items[4]), null));
+                }
             }
 
             return Chaves;

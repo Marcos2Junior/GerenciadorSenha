@@ -1,11 +1,14 @@
-﻿using System;
+﻿using GerenciadorSenha.Forms;
+using GerenciadorSenha.Modelos;
+using GerenciadorSenha.Servicos;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace GerenciadorSenha
+namespace GerenciadorSenha.Forms
 {
     public partial class FrmExibeSenha : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace GerenciadorSenha
+﻿namespace GerenciadorSenha.Forms
 {
     partial class FrmExibeSenha
     {
