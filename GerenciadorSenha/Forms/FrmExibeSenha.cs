@@ -1,5 +1,4 @@
-﻿using GerenciadorSenha.Forms;
-using GerenciadorSenha.Modelos;
+﻿using GerenciadorSenha.Modelos;
 using GerenciadorSenha.Servicos;
 using System;
 using System.Collections.Generic;
@@ -133,7 +132,7 @@ namespace GerenciadorSenha.Forms
             //ativa panel exibe
             panel_exibe.Enabled = false;
 
-           Chaves = await new ChaveServices(Key).LerChavesAsync();
+            Chaves = await new ChaveServices(Key).LerChavesAsync();
 
             Chaves.ForEach(x => lb_nomeSenha.Items.Add(x.Nome));
 
@@ -168,13 +167,11 @@ namespace GerenciadorSenha.Forms
 
         private void pb_novaSenha_Click(object sender, EventArgs e)
         {
-            FrmNovaSenha frm = new FrmNovaSenha
-            {
-                Key = Key
-            };
-            frm.ShowDialog();
-
-            Close();
+            FrmNovaSenha frm = new FrmNovaSenha();
+            Hide();
+            frm.Key = Key;
+            _ = frm.ShowDialog();
+            Show();
         }
 
         private void lb_nomeSenha_SelectedIndexChanged(object sender, EventArgs e)
@@ -193,7 +190,7 @@ namespace GerenciadorSenha.Forms
 
         private void FrmExibeSenha_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.F1)
+            if (e.KeyCode == Keys.F1)
             {
                 panelMovimentoRight = true;
                 contadorBloqueio = 60;

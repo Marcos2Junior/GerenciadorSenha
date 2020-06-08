@@ -490,11 +490,11 @@
             this.ClientSize = new System.Drawing.Size(450, 495);
             this.Controls.Add(this.panel_bloqueia_tela);
             this.Controls.Add(this.panel_exibe);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.KeyPreview = true;
             this.Name = "FrmExibeSenha";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmExibeSenha";
+            this.Text = "Gerenciador de senhas";
             this.Load += new System.EventHandler(this.FrmExibeSenha_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmExibeSenha_KeyDown);
             this.panel_exibe_senha.ResumeLayout(false);

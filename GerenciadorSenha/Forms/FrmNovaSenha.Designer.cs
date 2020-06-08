@@ -73,7 +73,7 @@
             this.txt_descricao.Name = "txt_descricao";
             this.txt_descricao.PlaceholderText = "Detalhes sobre a senha ex: Login, site...";
             this.txt_descricao.Size = new System.Drawing.Size(313, 16);
-            this.txt_descricao.TabIndex = 0;
+            this.txt_descricao.TabIndex = 3;
             this.txt_descricao.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txt_chave
@@ -84,7 +84,7 @@
             this.txt_chave.PasswordChar = '*';
             this.txt_chave.PlaceholderText = "Senha";
             this.txt_chave.Size = new System.Drawing.Size(153, 16);
-            this.txt_chave.TabIndex = 0;
+            this.txt_chave.TabIndex = 1;
             this.txt_chave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txt_nome
@@ -247,7 +247,7 @@
             this.txt_confChave.PasswordChar = '*';
             this.txt_confChave.PlaceholderText = "Confirmar Senha";
             this.txt_confChave.Size = new System.Drawing.Size(154, 16);
-            this.txt_confChave.TabIndex = 0;
+            this.txt_confChave.TabIndex = 2;
             this.txt_confChave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label10
@@ -269,7 +269,7 @@
             this.txt_senhaAcesso.PasswordChar = '*';
             this.txt_senhaAcesso.PlaceholderText = "Insira sua chave de acesso ao sistema";
             this.txt_senhaAcesso.Size = new System.Drawing.Size(313, 16);
-            this.txt_senhaAcesso.TabIndex = 0;
+            this.txt_senhaAcesso.TabIndex = 4;
             this.txt_senhaAcesso.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label9
@@ -292,7 +292,7 @@
             this.lbl_gravar.Location = new System.Drawing.Point(288, 241);
             this.lbl_gravar.Name = "lbl_gravar";
             this.lbl_gravar.Size = new System.Drawing.Size(48, 17);
-            this.lbl_gravar.TabIndex = 6;
+            this.lbl_gravar.TabIndex = 5;
             this.lbl_gravar.Text = "Gravar";
             this.lbl_gravar.Click += new System.EventHandler(this.lbl_gravar_Click);
             // 
@@ -330,10 +330,10 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lb_nomeSenhas);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FrmNovaSenha";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrmNovaSenha";
+            this.Text = "Gerenciador de Senhas - Nova Senha";
             this.Load += new System.EventHandler(this.FrmNovaSenha_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

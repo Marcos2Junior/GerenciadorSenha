@@ -58,7 +58,7 @@ namespace GerenciadorSenha.Servicos
                 {
                     string[] items = line.Split(":-");
 
-                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], Cripto.Decrypt(items[2]), items[3], DateTime.Parse(items[4]), null));
+                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], Cripto.Decrypt(items[2]), string.Empty, items[3], DateTime.Parse(items[4]), null));
                 }
             }
 
