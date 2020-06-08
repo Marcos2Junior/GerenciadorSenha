@@ -15,7 +15,7 @@ namespace GerenciadorSenha
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmExibeSenha());
+            Application.Run(new FrmUsuarioNovo());
         }
     }
 }

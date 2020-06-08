@@ -6,4 +6,8 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Forms\FrmNovaSenha.cs~RF1eeb6e9.TMP" />
+  </ItemGroup>
+
 </Project>

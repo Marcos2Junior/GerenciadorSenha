@@ -51,6 +51,7 @@
             this.lbl_gravar = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lbl_voltar = new System.Windows.Forms.Label();
+            this.lbl_avisoDefault = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -168,6 +169,7 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.lbl_avisoDefault);
             this.panel1.Controls.Add(this.lbl_avisoConfSenha);
             this.panel1.Controls.Add(this.lbl_avisoDescricao);
             this.panel1.Controls.Add(this.lbl_avisoConfChave);
@@ -320,6 +322,16 @@
             this.lbl_voltar.Text = "Voltar";
             this.lbl_voltar.Click += new System.EventHandler(this.lbl_voltar_Click);
             // 
+            // lbl_avisoDefault
+            // 
+            this.lbl_avisoDefault.AutoSize = true;
+            this.lbl_avisoDefault.Font = new System.Drawing.Font("Arial Narrow", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lbl_avisoDefault.ForeColor = System.Drawing.Color.Red;
+            this.lbl_avisoDefault.Location = new System.Drawing.Point(110, 5);
+            this.lbl_avisoDefault.Name = "lbl_avisoDefault";
+            this.lbl_avisoDefault.Size = new System.Drawing.Size(0, 15);
+            this.lbl_avisoDefault.TabIndex = 6;
+            // 
             // FrmNovaSenha
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -331,10 +343,12 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lb_nomeSenhas);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "FrmNovaSenha";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Gerenciador de Senhas - Nova Senha";
             this.Load += new System.EventHandler(this.FrmNovaSenha_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmNovaSenha_KeyDown);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -368,5 +382,6 @@
         private System.Windows.Forms.Label lbl_avisoConfChave;
         private System.Windows.Forms.Label lbl_avisoChave;
         private System.Windows.Forms.Label lbl_avisoConfSenha;
+        private System.Windows.Forms.Label lbl_avisoDefault;
     }
 }

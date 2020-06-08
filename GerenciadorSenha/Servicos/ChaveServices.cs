@@ -33,13 +33,11 @@ namespace GerenciadorSenha.Servicos
 
         public void Gravar()
         {
-
-
             Directory.CreateDirectory(Caminho);
             using StreamWriter sw = new StreamWriter(Caminho + "Senhas");
             Chaves.ForEach(item =>
             {
-                sw.WriteLineAsync($"{item.Id}:-{item.Nome}:-{Cripto.Encrypt(item.Senha)}:-{item.Observacao}:-{item.DataCadastro}");
+                sw.WriteLineAsync($"{item.Id}:-{item.Nome}:-{Cripto.Encrypt(item.Senha)}:-{Cripto.Encrypt(item.Observacao)}:-{item.DataCadastro}");
             });
         }
 
@@ -58,7 +56,7 @@ namespace GerenciadorSenha.Servicos
                 {
                     string[] items = line.Split(":-");
 
-                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], Cripto.Decrypt(items[2]), string.Empty, items[3], DateTime.Parse(items[4]), null));
+                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], Cripto.Decrypt(items[2]), string.Empty, Cripto.Decrypt(items[3]), DateTime.Parse(items[4]), null));
                 }
             }
 
