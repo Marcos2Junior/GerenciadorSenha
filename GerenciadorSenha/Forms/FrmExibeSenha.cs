@@ -132,7 +132,9 @@ namespace GerenciadorSenha.Forms
             //ativa panel exibe
             panel_exibe.Enabled = false;
 
-            Chaves = await new ChaveServices(Key).LerChavesAsync();
+            ChaveServices chaveServices = new ChaveServices(Key);
+            await chaveServices.LerChavesAsync();
+            Chaves = chaveServices.Chaves;
 
             Chaves.ForEach(x => lb_nomeSenha.Items.Add(x.Nome));
 

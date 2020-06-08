@@ -3,64 +3,69 @@ using GerenciadorSenha.Modelos;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GerenciadorSenha.Servicos
 {
-    public class ChaveServices
+    public class ChaveServices : Services
     {
-        private List<Chave> Chaves;
-        private Chave Chave;
-        private readonly Cripto Cripto;
-        public List<string> RetornoMensagem { get; set; }
-        
-        private readonly string Caminho = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Data\Senhas\";
+        #region Variaveis
+        private readonly string Caminho = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Data\Senhas";
+        #endregion
 
+        #region Propriedades
+        public List<Chave> Chaves { get; set; }
+        #endregion
 
-        public ChaveServices(List<Chave> chaves, string key)
+        #region Construtores
+        public ChaveServices(List<Chave> chaves, string key) : base(key) => Chaves = chaves;
+        public ChaveServices(string key) : base(key)
+        { }
+        #endregion
+
+        #region Metodos
+        public async Task LerChavesAsync()
         {
-            Chaves = chaves;
-            Cripto = new Cripto(key);
-        }
+            Chaves = new List<Chave>();
 
-        public ChaveServices(Chave chave, string key)
-        {
-            Chave = chave;
-            Cripto = new Cripto(key);
-        }
-        public ChaveServices(string key) => Cripto = new Cripto(key);
+            if (VerificaExistencia(Caminho))
+            {
+                using StreamReader sr = new StreamReader(Caminho);
 
+                string line = string.Empty;
+                int contline = 0;
+                while ((line = await sr.ReadLineAsync()) != null)
+                {
+                    try
+                    {
+                        string[] items = Cripto.Decrypt(line).Split(":-");
+
+                        if (items.Count() >= 5)
+                            Chaves.Add(new Chave(int.Parse(items[0]), items[1], items[2], string.Empty, items[3], DateTime.Parse(items[4]), null));
+                        else
+                            RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contline);
+                    }
+                    catch (Exception)
+                    {
+                        RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contline);
+                    }
+
+                    contline++;
+                }
+            }
+        }
         public void Gravar()
         {
-            Directory.CreateDirectory(Caminho);
-            using StreamWriter sw = new StreamWriter(Caminho + "Senhas");
+            CriaDiretorio();
+            using StreamWriter sw = new StreamWriter(Caminho);
             Chaves.ForEach(item =>
             {
-                sw.WriteLineAsync($"{item.Id}:-{item.Nome}:-{Cripto.Encrypt(item.Senha)}:-{Cripto.Encrypt(item.Observacao)}:-{item.DataCadastro}");
+                string line = $"{item.Id}:-{item.Nome}:-{item.Senha}:-{item.Observacao}:-{item.DataCadastro}";
+                sw.WriteLineAsync(Cripto.Encrypt(line));
             });
         }
 
-        public async Task<List<Chave>> LerChavesAsync()
-        {
-            Directory.CreateDirectory(Caminho);
-
-            Chaves = new List<Chave>();
-
-            if (File.Exists(Caminho + "Senhas"))
-            {
-                using StreamReader sr = new StreamReader(Caminho + "Senhas");
-
-                string line = string.Empty;
-                while ((line = await sr.ReadLineAsync()) != null)
-                {
-                    string[] items = line.Split(":-");
-
-                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], Cripto.Decrypt(items[2]), string.Empty, Cripto.Decrypt(items[3]), DateTime.Parse(items[4]), null));
-                }
-            }
-
-            return Chaves;
-        }
+        #endregion
     }
 }

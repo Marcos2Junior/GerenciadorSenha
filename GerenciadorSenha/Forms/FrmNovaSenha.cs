@@ -35,7 +35,7 @@ namespace GerenciadorSenha.Forms
             {
                 Gravar();
             }
-            else if(e.KeyCode == Keys.Escape)
+            else if (e.KeyCode == Keys.Escape)
             {
                 Close();
             }
@@ -190,13 +190,16 @@ namespace GerenciadorSenha.Forms
         /// </summary>
         private async void CarregaDadosListBox()
         {
-            Chaves = await new ChaveServices(Key).LerChavesAsync();
+            ChaveServices chaveServices = new ChaveServices(Key);
+
+            await chaveServices.LerChavesAsync();
+            Chaves = chaveServices.Chaves;
 
             Chaves.ForEach(x => lb_nomeSenhas.Items.Add(x.Nome));
         }
 
         #endregion
 
-      
+
     }
 }
