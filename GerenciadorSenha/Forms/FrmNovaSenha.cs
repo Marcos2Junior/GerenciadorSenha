@@ -12,7 +12,8 @@ namespace GerenciadorSenha.Forms
 {
     public partial class FrmNovaSenha : Form
     {
-        public List<Chave> Chaves { get; set; }
+        private List<Chave> Chaves;
+        public string Key { get; set; }
 
         public FrmNovaSenha()
         {
@@ -28,13 +29,13 @@ namespace GerenciadorSenha.Forms
         {
             Chaves.Add(new Chave(Chaves.Count, txt_nome.Text, txt_chave.Text, txt_descricao.Text, DateTime.Now, null));
 
-            ChaveServices asd = new ChaveServices(Chaves);
+            ChaveServices asd = new ChaveServices(Chaves, txt_senhaAcesso.Text);
             asd.Gravar();
         }
 
         private async void CarregaDadosListBox()
         {
-            Chaves = await new ChaveServices().LerChavesAsync();
+            Chaves = await new ChaveServices(Key).LerChavesAsync();
 
             Chaves.ForEach(x => lb_nomeSenhas.Items.Add(x.Nome));
         }
@@ -70,10 +71,13 @@ namespace GerenciadorSenha.Forms
 
         private void lbl_voltar_Click(object sender, EventArgs e)
         {
-            FrmExibeSenha frm = new FrmExibeSenha();
+            FrmExibeSenha frm = new FrmExibeSenha
+            {
+                Key = Key
+            };
             frm.ShowDialog();
 
-            this.Close();
+            Close();
         }
     }
 }

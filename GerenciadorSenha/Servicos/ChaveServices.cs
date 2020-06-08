@@ -1,4 +1,5 @@
-﻿using GerenciadorSenha.Modelos;
+﻿using GerenciadorSenha.Classes;
+using GerenciadorSenha.Modelos;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,24 +10,36 @@ namespace GerenciadorSenha.Servicos
 {
     public class ChaveServices
     {
-        public List<Chave> Chaves { get; set; }
-        public Chave Chave { get; set; }
+        private List<Chave> Chaves;
+        private Chave Chave;
+        private readonly Cripto Cripto;
         public List<string> RetornoMensagem { get; set; }
+        
+        private readonly string Caminho = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Data\Senhas\";
 
-        readonly string Caminho = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Data\Senhas\";
 
-        public ChaveServices(List<Chave> chaves) => Chaves = chaves;
+        public ChaveServices(List<Chave> chaves, string key)
+        {
+            Chaves = chaves;
+            Cripto = new Cripto(key);
+        }
 
-        public ChaveServices(Chave chave) => Chave = chave;
-        public ChaveServices() { }
+        public ChaveServices(Chave chave, string key)
+        {
+            Chave = chave;
+            Cripto = new Cripto(key);
+        }
+        public ChaveServices(string key) => Cripto = new Cripto(key);
 
         public void Gravar()
         {
+
+
             Directory.CreateDirectory(Caminho);
             using StreamWriter sw = new StreamWriter(Caminho + "Senhas");
             Chaves.ForEach(item =>
             {
-                sw.WriteLineAsync($"{item.Id}:-{item.Nome}:-{item.Senha}:-{item.Observacao}:-{item.DataCadastro}");
+                sw.WriteLineAsync($"{item.Id}:-{item.Nome}:-{Cripto.Encrypt(item.Senha)}:-{item.Observacao}:-{item.DataCadastro}");
             });
         }
 
@@ -45,7 +58,7 @@ namespace GerenciadorSenha.Servicos
                 {
                     string[] items = line.Split(":-");
 
-                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], items[2], items[3], DateTime.Parse(items[4]), null));
+                    Chaves.Add(new Chave(int.Parse(items[0]), items[1], Cripto.Decrypt(items[2]), items[3], DateTime.Parse(items[4]), null));
                 }
             }
 

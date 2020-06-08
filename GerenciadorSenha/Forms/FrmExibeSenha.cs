@@ -14,9 +14,12 @@ namespace GerenciadorSenha.Forms
     {
         private bool panelMovimentoRight = false;
         private bool panelMovimentoLeft = false;
-        int contadorPanel = 0;
-        int contadorBloqueio = 60;
-        public List<Chave> Chaves { get; set; }
+        private int contadorPanel = 0;
+        private int contadorBloqueio = 60;
+
+        public string Key { get; set; }
+
+        private List<Chave> Chaves;
         public FrmExibeSenha()
         {
             InitializeComponent();
@@ -117,8 +120,8 @@ namespace GerenciadorSenha.Forms
             string senha = "jujubinha";
             if (txt_senha.Text == senha)
             {
+                Key = txt_senha.Text;
                 panelMovimentoLeft = true;
-
                 CarregaDadosForm();
             }
         }
@@ -130,7 +133,7 @@ namespace GerenciadorSenha.Forms
             //ativa panel exibe
             panel_exibe.Enabled = false;
 
-           Chaves = await new ChaveServices().LerChavesAsync();
+           Chaves = await new ChaveServices(Key).LerChavesAsync();
 
             Chaves.ForEach(x => lb_nomeSenha.Items.Add(x.Nome));
 
@@ -165,7 +168,10 @@ namespace GerenciadorSenha.Forms
 
         private void pb_novaSenha_Click(object sender, EventArgs e)
         {
-            FrmNovaSenha frm = new FrmNovaSenha();
+            FrmNovaSenha frm = new FrmNovaSenha
+            {
+                Key = Key
+            };
             frm.ShowDialog();
 
             Close();
