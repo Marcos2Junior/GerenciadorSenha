@@ -36,7 +36,7 @@ namespace GerenciadorSenha.Servicos
         {
             Chaves = new List<Chave>();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(false);
 
             using StreamReader sr = new StreamReader(CaminhoFile);
 
@@ -63,7 +63,7 @@ namespace GerenciadorSenha.Servicos
 
             sr.Close();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(true);
 
             await MatchChaveVisualiza();
         }
@@ -72,7 +72,7 @@ namespace GerenciadorSenha.Servicos
         {
             chaveVisualizaServices.ChaveVisualizas = new List<ChaveVisualiza>();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(false);
 
             using StreamWriter sw = new StreamWriter(CaminhoFile);
             Chaves.ForEach(async item =>
@@ -86,7 +86,7 @@ namespace GerenciadorSenha.Servicos
 
             sw.Close();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(true);
 
             chaveVisualizaServices.Gravar();
 

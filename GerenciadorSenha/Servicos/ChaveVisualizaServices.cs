@@ -22,7 +22,7 @@ namespace GerenciadorSenha.Servicos
         {
             ChaveVisualizas = new List<ChaveVisualiza>();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(false);
 
             using StreamReader sr = new StreamReader(CaminhoFile);
 
@@ -49,12 +49,12 @@ namespace GerenciadorSenha.Servicos
 
             sr.Close();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(true);
 
         }
         public void Gravar()
         {
-            BlockDeblockFolder();
+            BlockDeblockFolder(false);
 
             using StreamWriter sw = new StreamWriter(CaminhoFile);
             ChaveVisualizas.ForEach(async item =>
@@ -65,7 +65,7 @@ namespace GerenciadorSenha.Servicos
 
             sw.Close();
 
-            BlockDeblockFolder();
+            BlockDeblockFolder(true);
         }
 
         #endregion

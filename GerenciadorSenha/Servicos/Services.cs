@@ -1,6 +1,5 @@
 ﻿using GerenciadorSenha.Classes;
 using GerenciadorSenha.Modelos.Enum;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -45,25 +44,37 @@ namespace GerenciadorSenha
         /// <summary>
         /// Bloqueia/Libera acesso a pasta DataInfoApplication
         /// </summary>
-        protected void BlockDeblockFolder()
+        /// <param name="block">true para bloqueio</param>
+        protected void BlockDeblockFolder(bool block)
         {
             try
             {
                 VerificaDiretorio();
 
-                string newPathDirectory;
-                if (DirectoryInfo.FullName.Contains(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}"))
+                bool compblock;
+                do
                 {
-                    newPathDirectory = DirectoryInfo.FullName.Replace(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}", "");
-                    Directory.Move(DirectoryInfo.FullName, newPathDirectory);
-                }
-                else
-                {
-                    newPathDirectory = DirectoryInfo.FullName.Replace(DirectoryInfo.Name, DirectoryInfo.Name + ".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}");
-                    Directory.Move(DirectoryInfo.FullName, newPathDirectory);
-                }
+                    string newPathDirectory;
 
-                DirectoryInfo = new DirectoryInfo(newPathDirectory);
+                    //libera acesso
+                    if (DirectoryInfo.FullName.Contains(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}"))
+                    {
+                        newPathDirectory = DirectoryInfo.FullName.Replace(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}", "");
+                        Directory.Move(DirectoryInfo.FullName, newPathDirectory);
+                        compblock = false;
+                    }
+                    //bloqueia acesso
+                    else
+                    {
+                        newPathDirectory = DirectoryInfo.FullName.Replace(DirectoryInfo.Name, DirectoryInfo.Name + ".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}");
+                        Directory.Move(DirectoryInfo.FullName, newPathDirectory);
+                        compblock = true;
+                    }
+
+                    DirectoryInfo = new DirectoryInfo(newPathDirectory);
+
+                    //Garante que o acesso ao diretorio esteja conforme esperado caso a aplicacao tenha sido encerrada no meio do processo
+                } while (!block.Equals(compblock));
             }
             catch
             {
@@ -83,7 +94,7 @@ namespace GerenciadorSenha
             DirectoryInfo block = new DirectoryInfo(open.FullName.Replace(open.Name, open.Name + ".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}"));
 
             //Propriedade recebe condicao de existencia entre os dois diretorios
-            DirectoryInfo = Directory.Exists(block.FullName) ? block : open;
+            DirectoryInfo = Directory.Exists(open.FullName) ? open : block;
 
             Directory.CreateDirectory(DirectoryInfo.FullName);
         }
