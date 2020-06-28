@@ -11,7 +11,7 @@ namespace GerenciadorSenha.Servicos
     public class ChaveServices : Services
     {
         #region Variaveis
-
+        private readonly ChaveVisualizaServices chaveVisualizaServices;
         #endregion
 
         #region Propriedades
@@ -19,10 +19,13 @@ namespace GerenciadorSenha.Servicos
         #endregion
 
         #region Construtores
-        public ChaveServices(List<Chave> chaves, string key) : base(key) => Chaves = chaves;
-        public ChaveServices(string key) : base(key)
+        public ChaveServices(List<Chave> chaves, string key) : base(key)
         {
+            Chaves = chaves;
+            chaveVisualizaServices = new ChaveVisualizaServices(key);
         }
+        
+        public ChaveServices(string key) : base(key) => chaveVisualizaServices = new ChaveVisualizaServices(key);
         #endregion
 
         #region Metodos
@@ -33,7 +36,7 @@ namespace GerenciadorSenha.Servicos
         {
             Chaves = new List<Chave>();
 
-            BlockDeblockFolder(false);
+            BlockDeblockFolder();
 
             using StreamReader sr = new StreamReader(CaminhoFile);
 
@@ -60,21 +63,46 @@ namespace GerenciadorSenha.Servicos
 
             sr.Close();
 
-            BlockDeblockFolder(true);
+            BlockDeblockFolder();
 
+            await MatchChaveVisualiza();
         }
-        public void Gravar()
+
+        public async Task GravarAsync()
         {
-            BlockDeblockFolder(false);
+            chaveVisualizaServices.ChaveVisualizas = new List<ChaveVisualiza>();
+
+            BlockDeblockFolder();
+
             using StreamWriter sw = new StreamWriter(CaminhoFile);
-            Chaves.ForEach(item =>
+            Chaves.ForEach(async item =>
             {
+                if (item.ChaveVisualizas != null)
+                    chaveVisualizaServices.ChaveVisualizas.AddRange(item.ChaveVisualizas);
+
                 string line = $"{item.Id}:-{item.Nome}:-{item.Senha}:-{item.Observacao}:-{item.DataCadastro}";
-                sw.WriteLineAsync(Cripto.Encrypt(line));
+                await sw.WriteLineAsync(Cripto.Encrypt(line));
             });
+
             sw.Close();
 
-            BlockDeblockFolder(true);
+            BlockDeblockFolder();
+
+            chaveVisualizaServices.Gravar();
+
+            await LerChavesAsync();
+        }
+
+        /// <summary>
+        /// Realiza leitura das chavesVisualizadas e relaciona com as Chaves
+        /// </summary>
+        /// <returns></returns>
+        private async Task MatchChaveVisualiza()
+        {
+            await chaveVisualizaServices.LerChavesAsync();
+
+            Chaves.ForEach(x => x.ChaveVisualizas = chaveVisualizaServices.ChaveVisualizas.Where(y =>
+            y.Chave.Id.Equals(x.Id)).ToList());
         }
 
         #endregion

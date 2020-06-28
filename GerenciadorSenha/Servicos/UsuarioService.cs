@@ -26,7 +26,7 @@ namespace GerenciadorSenha.Servicos
 
         public void Gravar()
         {
-            BlockDeblockFolder(false);
+            BlockDeblockFolder();
             using StreamWriter sw = new StreamWriter(CaminhoFile);
             Usuarios.ForEach(async item =>
             {
@@ -36,14 +36,14 @@ namespace GerenciadorSenha.Servicos
 
             sw.Close();
 
-            BlockDeblockFolder(true);
+            BlockDeblockFolder();
         }
 
         public async Task LerAsync()
         {
             Usuarios = new List<Usuario>();
 
-            BlockDeblockFolder(false);
+            BlockDeblockFolder();
 
             using StreamReader sr = new StreamReader(CaminhoFile);
 
@@ -78,7 +78,7 @@ namespace GerenciadorSenha.Servicos
 
             sr.Close();
 
-            BlockDeblockFolder(true);
+            BlockDeblockFolder();
         }
         #endregion
     }

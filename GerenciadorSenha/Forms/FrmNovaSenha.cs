@@ -153,7 +153,7 @@ namespace GerenciadorSenha.Forms
                 Chaves.Add(new Chave(Chaves.Count, txt_nome.Text, txt_chave.Text, txt_confChave.Text, txt_descricao.Text, DateTime.Now, null));
 
                 ChaveServices chaveServices = new ChaveServices(Chaves, txt_senhaAcesso.Text);
-                chaveServices.Gravar();
+                chaveServices.GravarAsync();
 
                 MessageBox.Show("Senha gravada com sucesso", "Sucesso!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();

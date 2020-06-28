@@ -3,6 +3,7 @@
     public enum ServicesEnum
     {
         Chave,
+        ChaveVisualiza,
         Usuario
     }
 }

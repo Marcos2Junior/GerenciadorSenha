@@ -27,7 +27,7 @@ namespace GerenciadorSenha.Modelos
         [StringLength(200, MinimumLength = 10, ErrorMessage = "Tamanho deve ser entre 10 e 200 caracteres.")]
         public string Observacao { get; set; }
         public DateTime DataCadastro { get; set; }
-        public List<ChaveVisualiza> ChaveVisualizas { get; set; }
+        public List<ChaveVisualiza> ChaveVisualizas { get; set; } = new List<ChaveVisualiza>();
 
         public Chave()
         {

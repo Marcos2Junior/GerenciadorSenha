@@ -1,5 +1,6 @@
 ﻿using GerenciadorSenha.Classes;
 using GerenciadorSenha.Modelos.Enum;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -20,14 +21,17 @@ namespace GerenciadorSenha
         public Services(string key)
         {
             Cripto = new Cripto(key);
-            DirectoryInfo = new DirectoryInfo(
-                new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\Data.{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}\");
-
             RetornoMensagem = new List<string>();
         }
         #endregion
 
         #region Metodos
+
+        /// <summary>
+        /// Para cada Service é destinado uma fileinfo com o nome do enum Service
+        /// </summary>
+        /// <param name="servicesEnum">Enum Service</param>
+        /// <returns>FileInfo Service</returns>
         protected FileInfo FileService(ServicesEnum servicesEnum)
         {
             string _path = DirectoryInfo.FullName + servicesEnum + ".gercrip";
@@ -39,41 +43,49 @@ namespace GerenciadorSenha
         }
 
         /// <summary>
-        /// Bloqueia/Libera acesso a pasta Data
+        /// Bloqueia/Libera acesso a pasta DataInfoApplication
         /// </summary>
-        /// <param name="block">true para bloquear</param>
-        protected void BlockDeblockFolder(bool block)
+        protected void BlockDeblockFolder()
         {
-            bool checkBlock;
-
-            do
+            try
             {
-                try
-                {
-                    DirectoryInfo.Attributes = FileAttributes.Normal;
-                    Directory.CreateDirectory(DirectoryInfo.FullName);
-                    string newPathDirectory;
-                    if (DirectoryInfo.FullName.Contains(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}"))
-                    {
-                        newPathDirectory = DirectoryInfo.FullName.Replace(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}", "");
-                        Directory.Move(DirectoryInfo.FullName, newPathDirectory);
-                        checkBlock = false;
-                    }
-                    else
-                    {
-                        newPathDirectory = DirectoryInfo.FullName.Replace(DirectoryInfo.Name, DirectoryInfo.Name + ".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}");
-                        Directory.Move(DirectoryInfo.FullName, newPathDirectory);
-                        checkBlock = true;
-                    }
+                VerificaDiretorio();
 
-                    DirectoryInfo = new DirectoryInfo(newPathDirectory) { Attributes = FileAttributes.Hidden };
-                }
-                catch (IOException ioException)
+                string newPathDirectory;
+                if (DirectoryInfo.FullName.Contains(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}"))
                 {
-                    throw ioException;
+                    newPathDirectory = DirectoryInfo.FullName.Replace(".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}", "");
+                    Directory.Move(DirectoryInfo.FullName, newPathDirectory);
+                }
+                else
+                {
+                    newPathDirectory = DirectoryInfo.FullName.Replace(DirectoryInfo.Name, DirectoryInfo.Name + ".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}");
+                    Directory.Move(DirectoryInfo.FullName, newPathDirectory);
                 }
 
-            } while (checkBlock != block);
+                DirectoryInfo = new DirectoryInfo(newPathDirectory);
+            }
+            catch
+            {
+                //Planejar um sistema de backup e chamar caso não seja possivel encontrar diretorio atual
+            }
+        }
+
+        /// <summary>
+        /// seleciona Propriedade DirectoryInfo de acordo com o estado atual do diretorio de dados
+        /// </summary>
+        private void VerificaDiretorio()
+        {
+            //Diretorio padrao aberto
+            DirectoryInfo open = new DirectoryInfo(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\DataInfoApplication\");
+
+            //Diretorio padrao Fechado
+            DirectoryInfo block = new DirectoryInfo(open.FullName.Replace(open.Name, open.Name + ".{2559a1f2-21d7-11d4-bdaf-00c04f60b9f0}"));
+
+            //Propriedade recebe condicao de existencia entre os dois diretorios
+            DirectoryInfo = Directory.Exists(block.FullName) ? block : open;
+
+            Directory.CreateDirectory(DirectoryInfo.FullName);
         }
 
         #endregion

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GerenciadorSenha.Forms
@@ -176,7 +177,7 @@ namespace GerenciadorSenha.Forms
             Show();
         }
 
-        private void lb_nomeSenha_SelectedIndexChanged(object sender, EventArgs e)
+        private async void lb_nomeSenha_SelectedIndexChanged(object sender, EventArgs e)
         {
             var _chave = Chaves.Where(x => x.Nome == lb_nomeSenha.SelectedItem.ToString()).FirstOrDefault();
 
@@ -187,6 +188,21 @@ namespace GerenciadorSenha.Forms
                 txt_dataCadastroSenha.Text = _chave.DataCadastro.ToString();
                 txt_descricaoSenha.Text = _chave.Observacao;
                 txt_idSenha.Text = _chave.Id.ToString();
+                var last = _chave.ChaveVisualizas.LastOrDefault();
+                if (last != null)
+                {
+                    txt_ultimaVisualizacaoSenha.Text = last.DataVisualizada.ToString();
+                }
+                else
+                {
+                    txt_ultimaVisualizacaoSenha.Text = "Primeiro Acesso.";
+                }
+
+                Chaves.Where(x => x.Equals(_chave)).First()
+                    .ChaveVisualizas.Add(new ChaveVisualiza(_chave, DateTime.Now));
+
+                ChaveServices chaveServices = new ChaveServices(Chaves, Key);
+                await chaveServices.GravarAsync();
             }
         }
 
