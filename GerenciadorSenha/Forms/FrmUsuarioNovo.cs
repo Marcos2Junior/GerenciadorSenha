@@ -1,5 +1,4 @@
-﻿using GerenciadorSenha.Modelos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

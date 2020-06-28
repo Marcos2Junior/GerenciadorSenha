@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace GerenciadorSenha.Modelos
+namespace GerenciadorSenhaLibrary.Modelos
 {
     public class UsuarioAcesso
     {

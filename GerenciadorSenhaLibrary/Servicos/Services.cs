@@ -1,9 +1,9 @@
-﻿using GerenciadorSenha.Classes;
-using GerenciadorSenha.Modelos.Enum;
+﻿using GerenciadorSenhaLibrary.Classes;
+using GerenciadorSenhaLibrary.Modelos.Enum;
 using System.Collections.Generic;
 using System.IO;
 
-namespace GerenciadorSenha
+namespace GerenciadorSenhaLibrary
 {
     public abstract class Services
     {

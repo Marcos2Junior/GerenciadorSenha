@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace GerenciadorSenha.Modelos
+namespace GerenciadorSenhaLibrary.Modelos
 {
     public class Chave
     {

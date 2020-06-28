@@ -1,11 +1,11 @@
-﻿using GerenciadorSenha.Modelos;
+﻿using GerenciadorSenhaLibrary.Modelos;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GerenciadorSenha.Servicos
+namespace GerenciadorSenhaLibrary.Servicos
 {
     public class ChaveVisualizaServices : Services
     {

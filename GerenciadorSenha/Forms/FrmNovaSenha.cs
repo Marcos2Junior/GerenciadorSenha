@@ -1,9 +1,10 @@
-﻿using GerenciadorSenha.Modelos;
-using GerenciadorSenha.Servicos;
+﻿using GerenciadorSenhaLibrary.Modelos;
+using GerenciadorSenhaLibrary.Servicos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GerenciadorSenha.Forms
@@ -27,13 +28,13 @@ namespace GerenciadorSenha.Forms
         #region Eventos
         private void FrmNovaSenha_Load(object sender, EventArgs e) => CarregaDadosListBox();
 
-        private void lbl_gravar_Click(object sender, EventArgs e) => Gravar();
+        private async void lbl_gravar_Click(object sender, EventArgs e) => await GravarAsync();
 
-        private void FrmNovaSenha_KeyDown(object sender, KeyEventArgs e)
+        private async void FrmNovaSenha_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Gravar();
+                await GravarAsync();
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -146,14 +147,14 @@ namespace GerenciadorSenha.Forms
         /// <summary>
         /// Grava os dados da nova senha
         /// </summary>
-        private void Gravar()
+        private async Task GravarAsync()
         {
             if (ValidaDados() && !NomeIgual)
             {
                 Chaves.Add(new Chave(Chaves.Count, txt_nome.Text, txt_chave.Text, txt_confChave.Text, txt_descricao.Text, DateTime.Now, null));
 
                 ChaveServices chaveServices = new ChaveServices(Chaves, txt_senhaAcesso.Text);
-                chaveServices.GravarAsync();
+                await chaveServices.GravarAsync();
 
                 MessageBox.Show("Senha gravada com sucesso", "Sucesso!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();

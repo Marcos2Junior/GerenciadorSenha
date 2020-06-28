@@ -1,11 +1,10 @@
-﻿using GerenciadorSenha.Modelos;
-using GerenciadorSenha.Servicos;
+﻿using GerenciadorSenhaLibrary.Modelos;
+using GerenciadorSenhaLibrary.Servicos;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GerenciadorSenha.Forms

@@ -1,4 +1,4 @@
-﻿namespace GerenciadorSenha.Modelos.Enum
+﻿namespace GerenciadorSenhaLibrary.Modelos.Enum
 {
     public enum ServicesEnum
     {

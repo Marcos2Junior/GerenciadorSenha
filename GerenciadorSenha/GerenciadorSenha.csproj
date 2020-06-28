@@ -8,8 +8,10 @@
 
   <ItemGroup>
     <None Remove="Forms\FrmNovaSenha.cs~RF1eeb6e9.TMP" />
-    <None Remove="Servicos\Services.cs~RF26be675.TMP" />
-    <None Remove="Servicos\Services.cs~RFc9dcc.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GerenciadorSenhaLibrary\GerenciadorSenhaLibrary.csproj" />
   </ItemGroup>
 
 </Project>

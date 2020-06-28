@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GerenciadorSenha.Modelos
+namespace GerenciadorSenhaLibrary.Modelos
 {
     public class ChaveVisualiza
     {

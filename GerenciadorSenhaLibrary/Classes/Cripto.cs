@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GerenciadorSenha.Classes
+namespace GerenciadorSenhaLibrary.Classes
 {
     public class Cripto
     {
