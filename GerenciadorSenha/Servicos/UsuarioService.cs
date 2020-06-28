@@ -9,10 +9,6 @@ namespace GerenciadorSenha.Servicos
 {
     public class UsuarioService : Services
     {
-        #region Variaveis
-        private readonly string Caminho = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Data\Usuarios";
-        #endregion
-
         #region Propriedades
         public List<Usuario> Usuarios { get; set; }
         #endregion
@@ -25,55 +21,64 @@ namespace GerenciadorSenha.Servicos
         #endregion
 
         #region Metodos
+
+        private string CaminhoFile => FileService(Modelos.Enum.ServicesEnum.Usuario).FullName;
+
         public void Gravar()
         {
-            CriaDiretorio();
-
-            using StreamWriter sw = new StreamWriter(Caminho);
+            BlockDeblockFolder(false);
+            using StreamWriter sw = new StreamWriter(CaminhoFile);
             Usuarios.ForEach(async item =>
             {
                 string line = $"{item.Id}:-{item.Nome}:-{item.Senha}:-{item.DicaSenha}:-{item.Nascimento}:-{item.Cadastro}";
                 await sw.WriteLineAsync(Cripto.Encrypt(line));
             });
+
+            sw.Close();
+
+            BlockDeblockFolder(true);
         }
 
         public async Task LerAsync()
         {
             Usuarios = new List<Usuario>();
 
-            if (VerificaExistencia(Caminho))
+            BlockDeblockFolder(false);
+
+            using StreamReader sr = new StreamReader(CaminhoFile);
+
+            string line = string.Empty;
+            int contLine = 0;
+
+            while ((line = await sr.ReadLineAsync()) != null)
             {
-                using StreamReader sr = new StreamReader(Caminho);
-
-                string line = string.Empty;
-                int contLine = 0;
-
-                while ((line = await sr.ReadLineAsync()) != null)
+                try
                 {
-                    try
-                    {
-                        string[] items = Cripto.Decrypt(line).Split(":-");
+                    string[] items = Cripto.Decrypt(line).Split(":-");
 
-                        if (items.Count() >= 6)
-                        {
-                            Usuarios.Add(new Usuario(int.Parse(items[0]),
-                                items[1], items[2], null,
-                                items[3], DateTime.Parse(items[4]),
-                                DateTime.Parse(items[5]), null, null));
-                        }
-                        else
-                        {
-                            RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contLine);
-                        }
+                    if (items.Count() >= 6)
+                    {
+                        Usuarios.Add(new Usuario(int.Parse(items[0]),
+                            items[1], items[2], null,
+                            items[3], DateTime.Parse(items[4]),
+                            DateTime.Parse(items[5]), null, null));
                     }
-                    catch (Exception)
+                    else
                     {
                         RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contLine);
                     }
-
-                    contLine++;
                 }
+                catch (Exception)
+                {
+                    RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contLine);
+                }
+
+                contLine++;
             }
+
+            sr.Close();
+
+            BlockDeblockFolder(true);
         }
         #endregion
     }

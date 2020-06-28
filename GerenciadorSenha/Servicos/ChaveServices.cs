@@ -11,7 +11,7 @@ namespace GerenciadorSenha.Servicos
     public class ChaveServices : Services
     {
         #region Variaveis
-        private readonly string Caminho = Directory.GetParent(Directory.GetCurrentDirectory()) + @"\Data\Senhas";
+
         #endregion
 
         #region Propriedades
@@ -21,49 +21,60 @@ namespace GerenciadorSenha.Servicos
         #region Construtores
         public ChaveServices(List<Chave> chaves, string key) : base(key) => Chaves = chaves;
         public ChaveServices(string key) : base(key)
-        { }
+        {
+        }
         #endregion
 
         #region Metodos
+
+        private string CaminhoFile => FileService(Modelos.Enum.ServicesEnum.Chave).FullName;
+
         public async Task LerChavesAsync()
         {
             Chaves = new List<Chave>();
 
-            if (VerificaExistencia(Caminho))
+            BlockDeblockFolder(false);
+
+            using StreamReader sr = new StreamReader(CaminhoFile);
+
+            string line = string.Empty;
+            int contline = 0;
+            while ((line = await sr.ReadLineAsync()) != null)
             {
-                using StreamReader sr = new StreamReader(Caminho);
-
-                string line = string.Empty;
-                int contline = 0;
-                while ((line = await sr.ReadLineAsync()) != null)
+                try
                 {
-                    try
-                    {
-                        string[] items = Cripto.Decrypt(line).Split(":-");
+                    string[] items = Cripto.Decrypt(line).Split(":-");
 
-                        if (items.Count() >= 5)
-                            Chaves.Add(new Chave(int.Parse(items[0]), items[1], items[2], string.Empty, items[3], DateTime.Parse(items[4]), null));
-                        else
-                            RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contline);
-                    }
-                    catch (Exception)
-                    {
+                    if (items.Count() >= 5)
+                        Chaves.Add(new Chave(int.Parse(items[0]), items[1], items[2], string.Empty, items[3], DateTime.Parse(items[4]), null));
+                    else
                         RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contline);
-                    }
-
-                    contline++;
                 }
+                catch (Exception)
+                {
+                    RetornoMensagem.Add("Erro na leitura do arquivo de usuarios => Linha " + contline);
+                }
+
+                contline++;
             }
+
+            sr.Close();
+
+            BlockDeblockFolder(true);
+
         }
         public void Gravar()
         {
-            CriaDiretorio();
-            using StreamWriter sw = new StreamWriter(Caminho);
+            BlockDeblockFolder(false);
+            using StreamWriter sw = new StreamWriter(CaminhoFile);
             Chaves.ForEach(item =>
             {
                 string line = $"{item.Id}:-{item.Nome}:-{item.Senha}:-{item.Observacao}:-{item.DataCadastro}";
                 sw.WriteLineAsync(Cripto.Encrypt(line));
             });
+            sw.Close();
+
+            BlockDeblockFolder(true);
         }
 
         #endregion

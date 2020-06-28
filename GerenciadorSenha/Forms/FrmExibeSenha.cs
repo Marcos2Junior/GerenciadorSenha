@@ -116,7 +116,7 @@ namespace GerenciadorSenha.Forms
 
         private void txt_senha_TextChanged(object sender, EventArgs e)
         {
-            string senha = "jujubinha";
+            string senha = "$9t9ptl6d2";
             if (txt_senha.Text == senha)
             {
                 Key = txt_senha.Text;
